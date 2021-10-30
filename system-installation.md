@@ -88,10 +88,10 @@ $ fdisk /dev/sda   # /dev/sda为磁盘设备的位置
 $ g   # 清除原有分区并创建一个GPT分区表
 $ n   # 创建一个新的分区/dev/sda1 -- 引导分区
       # 接下来选择分区的编号、起始位置、终止位置（分区大小，可用例如“+300M”的形式）
-$ n   # 创建一个新的分区/dev/sda3 -- SWAP分区（用于保存内存中的文件以及作为内存的扩展，此
+$ n   # 创建一个新的分区/dev/sda2 -- SWAP分区（用于保存内存中的文件以及作为内存的扩展，此
       # 分区不需要太大）
       # 这里我大小设置为1G
-$ n   # 创建一个新的分区/dev/sda2 -- 主分区
+$ n   # 创建一个新的分区/dev/sda3 -- 主分区
       # 大小我设置为磁盘的所有剩余空间
 $ p   # 查看待写入的分区结果
 $ w   # 写入
@@ -101,14 +101,14 @@ $ w   # 写入
 
 ```bash
 $ mkfs.fat -F32 /dev/sda1   # /dev/sda1为引导分区
-$ mkfs.ext4 /dev/sda2       # /dev/sda2为主分区
-$ mkswap /dev/sda3          # /dev/sda3为SWAP分区
+$ mkswap /dev/sda2          # /dev/sda2为SWAP分区
+$ mkfs.ext4 /dev/sda3       # /dev/sda3为主分区
 ```
 
 ### 4.4 打开`SWAP`
 
 ```bash
-$ swapon /dev/sda3
+$ swapon /dev/sda2
 ```
 
 ## 5. 配置`pacman`
@@ -125,11 +125,11 @@ $ nano /etc/pacman.conf
 
 - 寻找中国的服务器，将它移动到`mirrorlist`的最顶上，保存退出。
 
-- 我这里使用的是清华的源：
+- 我这里使用的是中科大的源：
 
   ```
   ## China
-  Server = http://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch
+  Server =  https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch
   ```
 
 ## 6. 使用`pacstrap`安装Arch Linux基础至磁盘中
